@@ -12,6 +12,7 @@
 
 [org 0x7c00]
 
+
 mov dx, 0x1fb6					; Перемещаем 0x1fb6 в регистр dx чтобы потом
 								; задействовать его в функции print_hex
 mov bx, HEX_OUT					; перемещаем HEX_OUT в bx
