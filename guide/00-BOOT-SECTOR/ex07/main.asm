@@ -15,7 +15,7 @@ mov sp, bp							; место
 
 mov bx, 0x9000						; Данные из сектороров будут загружаться в 
 									; адрес 0x0000(es):0x9000(bx), т.е. 
-									; (es * 16 + bs), равный 0x09000
+									; (es * 16 + bs), равный 0x90000
 
 mov dh, 2							; Загрузим 2 сектора
 
@@ -33,8 +33,8 @@ call print_hex
 
 jmp $
 
-%include "../ex06/print_string.asm"	; Функция печати строки
-%include "../ex06/print_hex.asm"	; Функция печати 16-ричного числа
+%include "../ex04/print_string.asm"	; Функция печати строки
+%include "../ex05/print_hex.asm"	; Функция печати 16-ричного числа
 %include "disk_load.asm"			; Функция чтения диска
 
 HEX_OUT: 
