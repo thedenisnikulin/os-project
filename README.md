@@ -14,18 +14,24 @@
 ## Установка и запуск
 
 1. Установить эмулятор QEMU (подробнее: https://www.qemu.org/download/)
-
 ```
 sudo apt install qemu-kvm qemu
 ```
-2. Клонировать и собрать проект
+2. Собрать кросс-компилятор gcc для i386 архитектуры процессора. Удобнее использовать готовый отсюда: https://wiki.osdev.org/GCC_Cross-Compiler#Prebuilt_Toolchains. Для компьютеров на Linux с x86_64 архитектурой:
+```
+wget http://newos.org/toolchains/i386-elf-4.9.1-Linux-x86_64.tar.xz
+mkdir /usr/local/i386elfgcc
+tar -xf i386-elf-4.9.1-Linux-x86_64.tar.xz -C /usr/local/i386elfgcc --strip-components=1
+export PATH=$PATH:/usr/local/i386elfgcc/bin
+```
+3. Клонировать и собрать проект
 ```
 git clone https://github.com/thedenisnikulin/os-project
 cd os-project/src/
 cd build/
 make
 ```
-3. Запустить образ ОС с помощью эмулятора
+4. Запустить образ ОС с помощью эмулятора
 ```
 qemu-system-i386 -fda os-image.bin
 ```
