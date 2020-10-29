@@ -14,13 +14,19 @@
 ## Установка и запуск
 
 1. Установить эмулятор QEMU (подробнее: https://www.qemu.org/download/)
-	`sudo apt install qemu-kvm qemu` (для Ubuntu)
 
+```
+sudo apt install qemu-kvm qemu
+```
+2. Клонировать и собрать проект
 ```
 git clone https://github.com/thedenisnikulin/os-project
 cd os-project/src/
 cd build/
 make
+```
+3. Запустить образ ОС с помощью эмулятора
+```
 qemu-system-i386 -fda os-image.bin
 ```
 
