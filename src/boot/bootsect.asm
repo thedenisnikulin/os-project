@@ -25,10 +25,10 @@ KERNEL_OFFSET equ 0x1000	; Смещение в памяти, из которог
 	jmp $
 
 %include "print_string.asm"		; ф. печати строки
-%include "print_hex.asm"			; ф. печати 16-ричного числа
-%include "disk_load.asm"			; ф. чтения диска
+%include "print_hex.asm"		; ф. печати 16-ричного числа
+%include "disk_load.asm"		; ф. чтения диска
 %include "print_string_pm.asm"	; ф. печати строки (32PM)
-%include "switch.asm"				; ф. переключения в 32PM
+%include "switch.asm"			; ф. переключения в 32PM
 %include "gdt.asm"				; таблица GDT
 
 [bits 16]

@@ -36,6 +36,9 @@ make
 qemu-system-i386 -fda os-image.bin
 ```
 
+## Справочник по синтаксису ассемблера NASM
+https://www.opennet.ru/docs/RUS/nasm/nasm_ru3.html
+
 
 ---
 ## Дополнительная информация
@@ -57,6 +60,6 @@ qemu-system-i386 -fda os-image.bin
 - Пример простого модуля к ядру линукса: https://github.com/jvns/kernel-module-fun/blob/master/hello.c
 - Еще один туториал о том, как написать ОС с нуля: https://github.com/cfenollosa/os-tutorial
 - Какая-то средненькая статья про написание ядра: https://arjunsreedharan.org/post/82710718100/kernels-101-lets-write-a-kernel
-- Сабреддит по разработке ОС: https://www.reddit.com/r/osdev/ 
+- Сабреддит по разработке ОС: https://www.reddit.com/r/osdev/
 - Большой список идей для проектов для разных ЯП, включая C/C++: https://github.com/tuvtran/project-based-learning/blob/master/README.md
 - Еще один список идей для проектов https://github.com/danistefanovic/build-your-own-x
