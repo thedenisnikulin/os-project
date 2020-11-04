@@ -13,8 +13,23 @@ void 	func() {}		/* Эта функция нужна чтобы показать
 						код бы начал выполняться с этой функции, а т.к. она
 						ничего не делает, то мы бы не получили результат */
 
+void	write(unsigned int i, unsigned char ch, unsigned char fg, unsigned char bg)
+{
+	char *vga = (char *) 0xb8000;
+	vga[i] = ch;
+	vga[i + 1] = ((fg & 0x0f) << 4) | (bg & 0x0f);
+}
+
 void	main()
 {
-	char *video_memory = (char *) 0xb8000;
-	*video_memory = 'x';
+	char fg = 0x2;	// green
+	char bg = 0x1;	// blue
+	char *msg = "Hello, world!";
+	int i = 0;
+	while (i < 26)
+	{
+		write(i, *msg, fg, bg);
+		i += 2;
+		msg++;
+	}
 }
