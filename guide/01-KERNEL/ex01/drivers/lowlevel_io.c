@@ -4,6 +4,7 @@
 *	Title:	Низкоуровневые I/O функции для работы с девайсами
 * ------------------------------------------------------------------------------
 *	Description:
+*       TODO: memory mapped - hardware io
 *       Мы уже познакомились с удобной системой взаимодействия с девайсами
 *       (например, в print_string_pm вы взаимодействовали с экраном с помощью
 *       адреса 0xb8000) с помощью ввода-ввывода (I/O), когда что-то можно
@@ -41,12 +42,12 @@ unsigned char   port_byte_in(unsigned short port)
     /* пишем еще один %. */
     /* Перемещаем результат в регистр AL т.к. размер AL == 1 байт */
     unsigned char result;
-    __asm__(
-        "in %%dx, %%al" /* Прочитать содержимое порта и положить это в AL */
-        : "=a" (result) /* Положить значение AL в переменную result */
-        : "d" (port)    /* Загрузить port в регистр EDX (extended DX: 32b) */
-    );
-    return (result);    /* Возвращаем прочитанное содержимое из port */
+	__asm__("in %%dx, %%al" : "=a" (result) : "d" (port));
+	/* разберем только что вызванную функцию: */
+	/* "in %%dx, %%al"		- Прочитать содержимое порта и положить это в AL */
+	/* : "=a" (result)		- Положить значение AL в переменную result */
+	/* : "d" (port)			- Загрузить port в регистр EDX (extended DX: 32b) */
+    return (result);		/* Возвращаем прочитанное содержимое из port */
 }
 
 
@@ -55,11 +56,11 @@ void    port_byte_out(unsigned short port, unsigned char data)
     /* Функция-обертка над assembly, пишущая data (1 байт) в port */
     /* unsigned short port: регистр какого-либо девайса, в который запишем */
     /* unsigned char data: 1 байт какой-то информации (например, символ) */
-    __asm__(
-        "out %%al, %%dx"    /* Записать data в port */
-        : "a" (data)        /* Загрузить data в регистр EAX */
-        : "d" (port)        /* Загрузить port в регистр EDX */
-    );
+	__asm__("out %%al, %%dx" : : "a" (data), "d" (port));
+	/* разберем только что вызванную функцию: */
+	/* "out %%al, %%dx"		- Записать data в port */
+	/* : "a" (data)			- Загрузить data в регистр EAX */
+	/* : "d" (port)			- Загрузить port в регистр EDX */
 }
 
 
@@ -68,11 +69,7 @@ unsigned char   port_word_in(unsigned short port)
     /* Функция-обертка над assembly, читающая 2 байта из параметра port */
     /* Перемещаем результат в регистр AX т.к. размер AX == 2 байта */
     unsigned short result;
-    __asm__(
-        "in %%dx, %%ax"
-        : "=a" (result)
-        : "d" (port)
-    );
+    __asm__("in %%dx, %%ax" : "=a" (result) : "d" (port));
     return (result);
 }
 
@@ -80,9 +77,5 @@ unsigned char   port_word_in(unsigned short port)
 void port_word_out(unsigned short port, unsigned short data)
 {
     /* Функция-обертка над assembly, пишущая data (2 байта, т.е. word) в port */
-    __asm__(
-        "out %%ax, dx%%"
-        : "a" (data)
-        : "d" (port)
-    );
+    __asm__("out %%ax, %%dx" : : "a" (data), "d" (port));
 }
