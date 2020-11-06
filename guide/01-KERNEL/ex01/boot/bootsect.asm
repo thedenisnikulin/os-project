@@ -1,5 +1,5 @@
 ; ------------------------------------------------------------------------------
-; Guide:	00-KERNEL
+; Guide:	01-KERNEL
 ; File:		ex00 / bootsect.asm
 ; Title:	Программа загрузочного сектора, которая загружает ядро, написанное
 ;			на C в 32-битный защищенный режим.
@@ -7,12 +7,13 @@
 ; Description:
 ; ------------------------------------------------------------------------------
 
+
 [org 0x7c00]
 
 KERNEL_OFFSET equ 0x1000	; Смещение в памяти, из которого мы загрузим ядро
 
 	mov [BOOT_DRIVE], dl	; BIOS stores our boot drive in DL , so it ’s
-							; best to remember this for later. (Remember that 
+							; best to remember this for later. (Remember that
 							; the BIOS sets us the boot drive in 'dl' on boot)
 	mov bp, 0x9000			; Устанавливаем стек
 	mov sp, bp
@@ -48,7 +49,7 @@ load_kernel:
 [bits 32]					; Сюда мы попадем после переключения в 32PM
 
 BEGIN_PM:
-	mov ebx, MSG_PROT_MODE	
+	mov ebx, MSG_PROT_MODE
 	call print_string_pm	; Печатаем сообщение об успешной загрузке в 32PM
 	call KERNEL_OFFSET		; Переходим в адрес, по которому загрузился код ядра
 	jmp $

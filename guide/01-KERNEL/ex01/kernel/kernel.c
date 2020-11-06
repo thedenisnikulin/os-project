@@ -2,8 +2,7 @@
 
 int		main()
 {
-	set_cursor_position(1);
-	char cpos = get_cursor_position();
-	write(cpos+'0', 0, 0, 0x0f);
+	int offset = 5;
+	putchar('x', 0x0f);
 	return 0;
 }

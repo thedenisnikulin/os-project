@@ -4,12 +4,31 @@
 // #define REG_SCREEN_CTRL 0x3d4
 // #define REG_SCREEN_DATA 0x3d5
 
-
-void	write(char character, int col, int row, short attribute_byte)
+void	putchar(char character, short attribute_byte)
 {
-	char *vga = (char *) 0xb8000;
-	vga[col] = character;
-	vga[col + 1] = attribute_byte;
+	int offset;
+
+	offset = get_cursor_position();
+	write(character, attribute_byte, offset);
+	set_cursor_position(offset+1);
+}
+
+void	clear_screen()
+{
+	char *vga = (char *) VIDEO_ADDRESS;
+	int	pos = 0;
+	while (pos < (MAX_ROWS * MAX_COLS - 1))
+	{
+		write('\0', 0x0f, pos);
+		pos += 2;
+	}
+}
+
+void	write(char character, short attribute_byte, int pos)
+{
+	char *vga = (char *) VIDEO_ADDRESS;
+	vga[pos] = character;
+	vga[pos + 1] = attribute_byte;
 }
 
 int		get_cursor_position()

@@ -15,6 +15,6 @@ void 	func() {}		/* Эта функция нужна чтобы показать
 
 void	main()
 {
-	char *video_memory = (char *) 0xb8000;
-	*video_memory = 'x';					/* Распологаем символ 'x' по */
-}	 										/* адресу 0xb8000 */
+	char *video_memory = (char *) 0xb8000;	/* Распологаем символ 'x' по */
+	*video_memory = 'x';					/* адресу 0xb8000 */
+}
