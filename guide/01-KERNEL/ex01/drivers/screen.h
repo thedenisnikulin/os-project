@@ -7,18 +7,21 @@
 * ----------------------------------------------------------------------------*/
 
 
-#define VIDEO_ADDRESS 0xb8000
-#define MAX_ROWS 25
-#define MAX_COLS 80
-// 0x0 == white fg, 0xf == white bg
-#define WHITE_ON_BLACK 0x0f
+#include "../common.h"
 
-// I/O порты для взаимодействия с экраном
-#define REG_SCREEN_CTRL 0x3d4	// этот порт описывает данные
+#define VIDEO_ADDRESS 0xb8000	// Адрес начала VGA для печати символов
+#define MAX_ROWS 25				// макс. строк
+#define MAX_COLS 80				// макс. столбцов
+
+#define WHITE_ON_BLACK 0x0f		// 0x0 == white fg, 0xf == black bg
+
+// Адреса I/O портов для взаимодействия с экраном.
+#define REG_SCREEN_CTRL 0x3d4	// этот порт для описания данных
 #define REG_SCREEN_DATA 0x3d5	// а этот порт для самих данных
 
-void putchar(char character, short attribute_byte);
-void clear_screen();
-void write(char character, short attribute_byte, int pos);
-int	get_cursor_position();
-void set_cursor_position(int pos);
+void	kprint(u8 *str);
+void	putchar(u8 character, u16 attribute_byte);
+void	clear_screen();
+void	write(u8 character, u8 attribute_byte, u32 pos);
+u32		get_cursor();
+void	set_cursor(u16 pos);

@@ -2,19 +2,19 @@ C_FILES = $(shell find ../drivers/*.c)
 temp = $(notdir $(C_FILES))
 O_FILES = ${temp:.c=.o}
 
-CFLAGS = -g		# debug flag for gcc
+# флаг для дебага для gcc
+CFLAGS = -g
 
 run: os-image.bin
-	# -s flag makes qemu listen to 1234 port
-	qemu-system-i386 -s -fda os-image.bin
+	qemu-system-i386 -fda os-image.bin
 	make clean
 
-debug: os-image.bin kernel.elf	# kernel.elf is used for gdb
-	qemu-system-i386 -s -fda os-image.bin
-	# i386-elf-gdb -ex "target remote :1234" -ex "symbol-file kernel.elf"
-	# if i386-elf-gdb: error while loading shared libraries: libncurses.so.5: 
-	# cannot open shared object file: No such file or directory
-	# sudo apt-get install libncurses5
+debug: os-image.bin kernel.elf
+	# kernel.elf нужен для gdb как symbol-file
+	# флаг -s указывает qemu открыть и прослушивать 1234 порт
+	# чтобы gdb смог соединиться с ним для дебага
+	# флаг -S указыает QEMU не запускать образ и подождать подключений
+	qemu-system-i386 -s -S -fda os-image.bin
 	make clean
 
 os-image.bin: bootsect.bin kernel.bin
@@ -33,7 +33,7 @@ kernel.o:
 	i386-elf-gcc ${CFLAGS} -ffreestanding -c ../kernel/kernel.c $(C_FILES)
 
 kernel.elf: kernel_entry.o kernel.o 
-	# like kernel.bin but with no --oformat binary
+	# как kernel.bin только без --oformat binary
 	i386-elf-ld -o kernel.bin -Ttext 0x1000 kernel_entry.o kernel.o $(O_FILES) -o kernel.elf
 
 clean:

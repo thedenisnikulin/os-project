@@ -1,51 +1,99 @@
+/*------------------------------------------------------------------------------
+*	Guide:	01-KERNEL
+*	File:	ex01 / drivers / screen.c
+*	Title:	Функции работы с экраном
+* ------------------------------------------------------------------------------
+*	Description:
+* ----------------------------------------------------------------------------*/
+
+
 #include "screen.h"
 #include "lowlevel_io.h"
+#include "../common.h"
 
-// #define REG_SCREEN_CTRL 0x3d4
-// #define REG_SCREEN_DATA 0x3d5
 
-void	putchar(char character, short attribute_byte)
+void	kprint(u8 *str)
 {
-	int offset;
+	/* Функция печати строки */
 
-	offset = get_cursor_position();
-	write(character, attribute_byte, offset);
-	set_cursor_position(offset+1);
+	while (*str)
+	{
+		putchar(*str, WHITE_ON_BLACK);
+		str++;
+	}
+}
+
+void	putchar(u8 character, u16 attribute_byte)
+{
+	/* Более высокоуровневая функция печати символа */
+
+	u32 offset;
+
+	offset = get_cursor();
+	if (character == '\n')
+	{
+		// Переводим строку.
+		// Попробуйте сами понять что происходит на строчке кода ниже :)
+		set_cursor((offset - offset % MAX_COLS) + MAX_COLS*2);
+	} 
+	else 
+	{
+		write(character, attribute_byte, offset);
+		set_cursor(offset+2);
+	}
 }
 
 void	clear_screen()
 {
-	char *vga = (char *) VIDEO_ADDRESS;
-	int	pos = 0;
-	while (pos < (MAX_ROWS * MAX_COLS - 1))
+	/* Функция очистки экрана */
+
+	u32	offset = 0;
+	while (offset < (MAX_ROWS * MAX_COLS * 2))
 	{
-		write('\0', 0x0f, pos);
-		pos += 2;
+		write('\0', 0x0f, offset);
+		offset += 2;
 	}
+	set_cursor(0);
 }
 
-void	write(char character, short attribute_byte, int pos)
+void	write(u8 character, u8 attribute_byte, u32 offset)
 {
-	char *vga = (char *) VIDEO_ADDRESS;
-	vga[pos] = character;
-	vga[pos + 1] = attribute_byte;
+	/* Функция печати символа на экран с помощью VGA по адресу 0xb8000 */
+
+	// u8 character: байт, соответствующий символу
+	// u8 attribute_byte: байт, соответствующий цвету текста/фона символа
+	// u32 offset: смещение (позиция), по которому нужно распечатать символ
+	u8 *vga = (u8 *) VIDEO_ADDRESS;
+	vga[offset] = character;
+	vga[offset + 1] = attribute_byte;
 }
 
-int		get_cursor_position()
+u32		get_cursor()
 {
-	port_byte_out(REG_SCREEN_CTRL, 14);				// запрашиваем верхний байт
-	char high_byte = port_byte_in(REG_SCREEN_DATA);	// принимаем
-	port_byte_out(REG_SCREEN_CTRL, 15);				// запрашиваем нижний байт
-	char low_byte = port_byte_in(REG_SCREEN_DATA);	// принимаем
-	return (((high_byte << 8) + low_byte) * 2);		// возвращаем смещение
+	/* Функция, возвращающая позицию курсора (char offset). */
+
+	port_byte_out(REG_SCREEN_CTRL, 14);				// Запрашиваем верхний байт
+	u8 high_byte = port_byte_in(REG_SCREEN_DATA);	// Принимаем его
+	port_byte_out(REG_SCREEN_CTRL, 15);				// Запрашиваем нижний байт
+	u8 low_byte = port_byte_in(REG_SCREEN_DATA);	// Принимаем и его
+	// Возвращаем смещение умножая его на 2, т.к. порты возвращают смещение в
+	// клетках экрана (cell offset), а нам нужно в символах (char offset), т.к.
+	// на каждый символ у нас 2 байта
+	return (((high_byte << 8) + low_byte) * 2);
 }
 
-void	set_cursor_position(int pos)
+void	set_cursor(u16 pos)
 {
-	/* Устанавливаем позицию курсора. */
-	port_byte_out(REG_SCREEN_CTRL, 14);				// указываем верхний байт
-	port_byte_out(REG_SCREEN_DATA, (pos << 8));		// передаем верхний байт
-	port_byte_out(REG_SCREEN_CTRL, 15);				// указываем нижний байт
-	port_byte_out(REG_SCREEN_DATA, (pos & 0xff));	// передаем нижний байт
+	/* Функция, устаналивающая курсор по смещнию (позиции) pos */
 	/* Поиграться с битами можно тут http://bitwisecmd.com/ */
+
+	pos /= 2;	// конвертируем в cell offset (в позицию по клеткам, а не
+				// символам)
+	// Устанавливаем позицию курсора
+	port_byte_out(REG_SCREEN_CTRL, 14);			// Указываем, что будем
+												// передавать верхний байт
+	port_byte_out(REG_SCREEN_DATA, (pos >> 8));	// Передаем верхний байт
+	port_byte_out(REG_SCREEN_CTRL, 15);			// Указываем, что будем
+												// передавать нижний байт
+	port_byte_out(REG_SCREEN_DATA, (pos & 0xff));	// передаем нижний байт
 }
