@@ -22,6 +22,7 @@
 void	kprint(u8 *str);
 void	putchar(u8 character, u16 attribute_byte);
 void	clear_screen();
-void	write(u8 character, u8 attribute_byte, u32 pos);
-u32		get_cursor();
+void	write(u8 character, u8 attribute_byte, u16 offset);
+void	scroll_line();
+u16		get_cursor();
 void	set_cursor(u16 pos);

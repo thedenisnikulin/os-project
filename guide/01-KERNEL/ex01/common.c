@@ -1,34 +1,22 @@
 /*------------------------------------------------------------------------------
 *	Guide:	01-KERNEL
-*	File:	ex01 / kernel / kernel.c
-*	Title:	Ядро
+*	File:	ex01 / common.c
+*	Title:	Всякие удобные константы, типы и функции
 * ------------------------------------------------------------------------------
 *	Description:
 * ----------------------------------------------------------------------------*/
 
 
-#include "../common.h"
-#include "../drivers/screen.h"
+#include "common.h"
 
-
-s32		kmain()
+void	memcpy(u8 *src, u8 *dest, u32 bytes)
 {
-	u8 i;
-	u8 k;
-	clear_screen();
+	u32 i;
 
 	i = 0;
-	while (i < 25)
+	while (i < bytes)
 	{
-		k = 0;
-		while (k < 10)
-		{
-			putchar(i + 'a', WHITE_ON_BLACK);
-			k++;
-		}
-		putchar('\n', WHITE_ON_BLACK);
+		dest[i] = src[i];
 		i++;
 	}
-
-	return 0;
 }

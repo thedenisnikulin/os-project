@@ -1,4 +1,4 @@
-C_FILES = $(shell find ../drivers/*.c)
+C_FILES = $(shell find ../drivers/*.c ../*.c)
 temp = $(notdir $(C_FILES))
 O_FILES = ${temp:.c=.o}
 

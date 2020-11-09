@@ -20,4 +20,6 @@ typedef 		 short	s16;
 typedef unsigned char	u8;
 typedef 		 char	s8;
 
+void	memcpy(u8 *src, u8 *dest, u32 bytes);
+
 #endif
