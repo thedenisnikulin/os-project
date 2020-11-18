@@ -1,35 +1,28 @@
-/*------------------------------------------------------------------------------
-*	Guide:	01-KERNEL
-*	File:	ex00 / kernel.c
-*	Title:	Программа на Си, в которую мы загрузимся после boot'а.
-* ------------------------------------------------------------------------------
-*	Description:
-* ----------------------------------------------------------------------------*/
+#include "../common.h"
+#include "../drivers/screen.h"
+#include "./utils.h"
 
 
-void 	func() {}		/* Эта функция нужна чтобы показать, что ядро будет
-						загружаться не с начала этого файла (0x00), а с
-						функции main. Если бы это было не так, то вместо main
-						код бы начал выполняться с этой функции, а т.к. она
-						ничего не делает, то мы бы не получили результат */
-
-void	write(unsigned int i, unsigned char ch, unsigned char fg, unsigned char bg)
-{
-	char *vga = (char *) 0xb8000;
-	vga[i] = ch;
-	vga[i + 1] = ((fg & 0x0f) << 4) | (bg & 0x0f);
-}
-
-void	main()
-{
-	char fg = 0x2;	// green
-	char bg = 0x1;	// blue
-	char *msg = "Hello, world!";
-	int i = 0;
-	while (i < 26)
-	{
-		write(i, *msg, fg, bg);
-		i += 2;
-		msg++;
-	}
+s32		kmain()
+{	
+	clear_screen();
+	
+	kprint_rick_and_morty();
+	
+	kprint(
+		"- Look Rick, we are in an OS!\n"
+		"- Damn Morty, that's fantastic!\n\n"
+	);
+	kprint("So... Welcome to my OS!\n\n");
+	kprint(
+		"Actually, the functionality of this OS is limited only to displaying that creepy "
+		"ASCII art. No commands, no more features. The only purpose of this OS is "
+		"educational - you can follow easy steps in guide/ folder and create your own OS, "
+		"just like this. The guide is well-documented and all written in Russian.\n\n"
+	);
+	kprint(
+		"Thank you for your attention!\n"
+		"Find me on GitHub: https://github.com/thedenisnikulin"
+	);
+	return 0;
 }

@@ -63,3 +63,4 @@ https://www.opennet.ru/docs/RUS/nasm/nasm_ru3.html
 - Сабреддит по разработке ОС: https://www.reddit.com/r/osdev/
 - Большой список идей для проектов для разных ЯП, включая C/C++: https://github.com/tuvtran/project-based-learning/blob/master/README.md
 - Еще один список идей для проектов https://github.com/danistefanovic/build-your-own-x
+- "Давайте напишем ядро с поддержкой ввода с клавиатуры и экрана": https://arjunsreedharan.org/post/99370248137/kernel-201-lets-write-a-kernel-with-keyboard-and 

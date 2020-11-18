@@ -42,7 +42,7 @@ void	putchar(u8 character, u8 attribute_byte)
 		if ((offset / 2 / MAX_COLS) == (MAX_ROWS - 1)) 
 			scroll_line();
 		else
-			set_cursor((offset - offset % MAX_COLS) + MAX_COLS*2);
+			set_cursor((offset - offset % (MAX_COLS*2)) + MAX_COLS*2);
 	}
 	else 
 	{
@@ -124,13 +124,15 @@ void	set_cursor(u16 pos)
 	/* Функция, устаналивающая курсор по смещнию (позиции) pos */
 	/* Поиграться с битами можно тут http://bitwisecmd.com/ */
 
-	pos /= 2;	// конвертируем в cell offset (в позицию по клеткам, а не
-				// символам)
-	// Устанавливаем позицию курсора
-	port_byte_out(REG_SCREEN_CTRL, 14);			// Указываем, что будем
-												// передавать верхний байт
-	port_byte_out(REG_SCREEN_DATA, (pos >> 8));	// Передаем верхний байт
-	port_byte_out(REG_SCREEN_CTRL, 15);			// Указываем, что будем
-												// передавать нижний байт
-	port_byte_out(REG_SCREEN_DATA, (pos & 0xff));	// передаем нижний байт
+	// конвертируем в cell offset (в позицию по клеткам, а не символам)
+	pos /= 2;
+
+	// Указываем, что будем передавать верхний байт
+	port_byte_out(REG_SCREEN_CTRL, 14);
+	// Передаем верхний байт
+	port_byte_out(REG_SCREEN_DATA, (u8)(pos >> 8));
+	// Указываем, что будем передавать нижний байт
+	port_byte_out(REG_SCREEN_CTRL, 15);
+	// Передаем нижний байт
+	port_byte_out(REG_SCREEN_DATA, (u8)(pos & 0xff));
 }

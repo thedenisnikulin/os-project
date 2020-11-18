@@ -40,7 +40,7 @@ load_kernel:
 							; Устанавливаем параметры для функции disk_load:
 	mov bx, KERNEL_OFFSET	; Загрузим данные в место памяти по		TODO: disk_load main lookup
 							; смещению KERNEL_OFFSET
-	mov dh, 2				; Загрузим 2 сектора
+	mov dh, 16				; Загрузим много секторов. *
 	mov dl, [BOOT_DRIVE]	; Загрузим данные из BOOT_DRIVE (Возвращаем BOOT_DRIVE)
 	call disk_load			; Вызываем функцию disk_load
 	ret
@@ -62,3 +62,8 @@ MSG_LOAD_KERNEL:	db "Loading kernel into VIDEO_MEMORY", 0
 
 times 510-($-$$) db 0
 dw 0xaa55
+
+; ------
+; * - Забавный факт: если загрузить меньше секторов, то мы столкнемся со
+; странными ошибками когда будем писать ядро на Си. Например, аргументы
+; функции могут быть повреждены, а строки "обрезаны".
