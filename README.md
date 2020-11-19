@@ -27,8 +27,7 @@ export PATH=$PATH:/usr/local/i386elfgcc/bin
 3. Клонировать и собрать проект
 ```
 git clone https://github.com/thedenisnikulin/os-project
-cd os-project/src/
-cd build/
+cd os-project/src/build
 make
 ```
 4. Запустить образ ОС с помощью эмулятора

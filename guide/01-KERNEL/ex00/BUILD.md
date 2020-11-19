@@ -15,15 +15,15 @@ nasm bootsect.asm -f bin -o bootsect.bin
 ```
 Флаги:
 - `-f bin` - формат бинарный
-- `-o bootsect.bin` - output file - bootsect.bin
+- `-o bootsect.bin` - output file = bootsect.bin
 2. Далее компилируем ядро в объектный файл, чтобы потом собрать его вместе с kernel_entry.
 ```
 i386-elf-gcc -ffreestanding -c kernel.c -o kernel.o
 ```
 Флаги:
-- `-ffreestanding` - в режиме `freestanding`, единственные доступные заголовочные файлы стандартной библиотеки это <float.h>, <iso646.h>, <limits.h>, <stdarg.h>, <stdbool.h>, <stddef.h> и <stdint.h>. Также эта опция указывает компиляторы не полагаться на то, что стандартные функции имеют их обычное определение. Это предотвратит компилятор от оптимизации, которую он делает на основе предположений о поведении функций из стандартных библиотек. Например в `hosted` режиме (противополжен `freestanding`), gcc знает о том, что имеющаяся библиотека соответствует спецификации стандарта языка Си. Он может преобразовать `printf("hi\n")` в `puts("hi")`, т.к. имеет представление из определения стандартной IO библиотеки что эти две функции ведут себя одинаково в данном случае. А с флагом `-ffreestanding` gcc не проводит подобных оптимизаций. Подобнее: http://cs107e.github.io/guides/gcc/, https://stackoverflow.com/questions/18711719/freestanding-gcc-and-builtin-functions.
+- `-ffreestanding` - в режиме `freestanding`, единственные доступные заголовочные файлы стандартной библиотеки это <float.h>, <iso646.h>, <limits.h>, <stdarg.h>, <stdbool.h>, <stddef.h> и <stdint.h>. Также эта опция указывает компилятору не полагаться на то, что стандартные функции имеют их обычное определение. Это предотвратит компилятор от оптимизации, которую он делает на основе предположений о поведении функций из стандартных библиотек. Например в `hosted` режиме (противополжен `freestanding`), gcc знает о том, что имеющаяся библиотека соответствует спецификации стандарта языка Си. Он может преобразовать `printf("hi\n")` в `puts("hi")`, т.к. имеет представление из определения стандартной IO библиотеки что эти две функции ведут себя одинаково в данном случае. А с флагом `-ffreestanding` gcc не проводит подобных оптимизаций. Подобнее: http://cs107e.github.io/guides/gcc/, https://stackoverflow.com/questions/18711719/freestanding-gcc-and-builtin-functions.
 - `-c kernel.c` - файл который нужно скомпилировать
-- `-o kernel.o` - output objective file
+- `-o kernel.o` - output object file
 3. Компилируем `kernel_entry.asm`
 ```
 nasm kernel_entry.asm -f elf -o kernel_entry.o
@@ -36,7 +36,7 @@ nasm kernel_entry.asm -f elf -o kernel_entry.o
 i386-elf-ld -o kernel.bin -Ttext 0x1000 kernel_entry.o kernel.o --oformat binary
 ```
 Флаги:
-- `-o kernel.bin` - output file - kernel.bin
+- `-o kernel.bin` - output file = kernel.bin
 - `-Ttext 0x1000` - этот флаг распологает секцию `.text` по адресу `0x1000`.
 - `--oformat binary` - output format = binary
 
@@ -48,6 +48,8 @@ cat bootsect.bin kernel.bin > os-image.bin
 ```
 qemu-system-i386 -fda os-image.bin
 ```
+Флаги:
+- `-fda` - использовать файл как образ флоппи диска (дискеты).
 
 Вуаля!
 

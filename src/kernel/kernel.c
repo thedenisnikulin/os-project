@@ -20,9 +20,8 @@ s32		kmain()
 		"educational - you can follow easy steps in guide/ folder and create your own OS, "
 		"just like this. The guide is well-documented and all written in Russian.\n\n"
 	);
-	kprint(
-		"Thank you for your attention!\n"
-		"Find me on GitHub: https://github.com/thedenisnikulin"
-	);
+	kprint("Thank you for your attention!\n");
+	kprint("Find me on GitHub: ");
+	kprint_colored("https://github.com/thedenisnikulin", 0xf0);
 	return 0;
 }
