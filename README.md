@@ -46,6 +46,7 @@ https://www.opennet.ru/docs/RUS/nasm/nasm_ru3.html
 Ссылки на полезный материал которым я пользовался в качестве теории.
 > На русском языке:
 - Серия статей о ядре Linux и его внутреннем устройстве: https://github.com/proninyaroslav/linux-insides-ru
+- Статья "Давай напишем ядро!": https://xakep.ru/2018/06/18/lets-write-a-kernel/
 > На английском языке:
 - Небольшая книга по разработке собственной ОС (70 страниц): https://www.cs.bham.ac.uk/~exr/lectures/opsys/10_11/lectures/os-dev.pdf
 - Общее введене в разработку операционных систем: https://wiki.osdev.org/Getting_Started
